@@ -15,7 +15,6 @@ const readBook = document.querySelector('#readYes');
 
 const myLibrary = new Array();
 
-
 function Book(id, title, author, pages, read){
     this.id = id;
     this.title = title;
@@ -26,13 +25,33 @@ function Book(id, title, author, pages, read){
 }
 
 function addBookToLibrary(array){
-    for (let i = 0; i < array.length; i++){
-        const newDiv = document.createElement("div");
-        for (const books in array[i]){
-            newDiv.innerText = books["id"];
-            libraryContainer.appendChild(newDiv);
+    const containerDiv = document.createElement("div");
+    const removeButton = document.createElement("button");
+    const bookValues = Object.values(array[array.length - 1]);
+    const uniqueID = bookValues[0];
+    console.log(uniqueID)
+
+    removeButton.classList.add("remove-button");
+    removeButton.innerText = "Delete";
+    containerDiv.classList.add("libraryBook");
+    libraryContainer.appendChild(containerDiv);
+
+    for (let i = 1; i < bookValues.length; i++){
+            const newDiv = document.createElement("div");
+            newDiv.innerText = bookValues[i];
+            containerDiv.appendChild(newDiv);
+        };
+       
+    removeButton.addEventListener("click", () => {
+        for (let i = 0; i < array.length;i++){
+            let currentBookId = Object.values(array[i]);
+            if (currentBookId[0] === uniqueID){
+                array.splice(i, 1);
+            }
         }
-    };
+        removeButton.parentNode.remove();
+    });
+    containerDiv.appendChild(removeButton);
 }
 
 

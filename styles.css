@@ -90,6 +90,27 @@ input[type="text"], input[type="number"], label{
 
 }
 
+.libraryBook{
+    display: grid;
+    border: solid;
+}
+
+.libraryBook div{
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.remove-button{
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    
+
+}
+
+.uniqueID{
+    
+}
+
 #dialog{
     margin: auto;
 }
