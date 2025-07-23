@@ -7,6 +7,8 @@ const titleBook = document.querySelector("#title");
 const authorBook = document.querySelector("#author");
 const pagesBook = document.querySelector("#pages");
 const readBook = document.querySelector('#readYes');
+const readBookNo = document.querySelector('#readNo');
+
  // Html variables
  const libraryContainer = document.querySelector(".library");
 
@@ -27,9 +29,9 @@ function Book(id, title, author, pages, read){
 function addBookToLibrary(array){
     const containerDiv = document.createElement("div");
     const removeButton = document.createElement("button");
+    const readButton = document.createElement("button");
     const bookValues = Object.values(array[array.length - 1]);
     const uniqueID = bookValues[0];
-    console.log(uniqueID)
 
     removeButton.classList.add("remove-button");
     removeButton.innerText = "Delete";
@@ -38,8 +40,19 @@ function addBookToLibrary(array){
 
     for (let i = 1; i < bookValues.length; i++){
             const newDiv = document.createElement("div");
-            newDiv.innerText = bookValues[i];
-            containerDiv.appendChild(newDiv);
+            if (bookValues[i] === true){
+                readButton.innerText = "Read";
+                readButton.classList.add("read-button");
+                containerDiv.appendChild(readButton);
+            } else if (bookValues[i] === false){
+                readButton.innerText = "Not Read";
+                readButton.classList.add("unread-button");
+                containerDiv.appendChild(readButton);
+            } else {
+                newDiv.innerText = bookValues[i];
+                containerDiv.appendChild(newDiv);
+            }
+            
         };
        
     removeButton.addEventListener("click", () => {
@@ -52,6 +65,42 @@ function addBookToLibrary(array){
         removeButton.parentNode.remove();
     });
     containerDiv.appendChild(removeButton);
+
+    readButton.addEventListener("click", () => {
+        for (let i = 0; i < array.length;i++){
+            let currentBookId = Object.values(array[i]);
+            if (currentBookId[0] === uniqueID){
+                if (array[i].read === true){
+                    array[i].read = false;
+                    readButton.innerText = "Not Read";
+                    readButton.classList.remove("read-button");
+                    readButton.classList.add("unread-button");
+                }else{
+                    array[i].read = true;
+                    readButton.innerText = "Read";
+                    readButton.classList.remove("unread-button");
+                    readButton.classList.add("read-button");
+                    };
+            };
+        };
+
+        
+    });
+};
+
+function clearForm(){
+    const form = document.querySelector("form");
+    const input = form.querySelectorAll("input");
+
+    input.forEach(item => {
+        item.value = "";
+    })
+
+    if (readBook.checked === true){
+        readBook.checked = false;
+    } else if (readBookNo.checked === true){
+        readBookNo.checked = false;
+    }
 }
 
 
@@ -66,9 +115,14 @@ submitButton.addEventListener("click", () => {
     } else {
         haveRead = false;
     }
+    
+
+
     const book1 = new Book(crypto.randomUUID(), titleBook.value, authorBook.value, pagesBook.value, haveRead);
     myLibrary.push(book1);
     addBookToLibrary(myLibrary);
+    clearForm();
+    dialog.close();
 
     
 })
